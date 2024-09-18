@@ -1,8 +1,9 @@
 provider "aws" {
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: "ap-south-1"
+  region     = "ap-South-1"
+  access_key = secret.aws_access_key
+  secret_key = secret.aws_secret_key
 }
+
 
 terraform {
 
