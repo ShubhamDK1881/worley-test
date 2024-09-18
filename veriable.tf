@@ -16,10 +16,6 @@ variable "vpc_name" {
   type = string
 }
 
-variable internet_gateway_name {
-  type = string
-}
-
 variable public_subnet1_cidr {
   type = string
 }
