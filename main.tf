@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "modules/vpc"
+  source = "./modules/vpc"
   region = var.region
   log_destination = module.s3.bucket_name_vpc_arn
   vpc_cidr = var.vpc_cidr
@@ -16,7 +16,7 @@ module "vpc" {
 }
 
 module "rds" {
-  source = "modules/rds"
+  source = "./modules/rds"
   engine_name              = var.DBEngineName
   major_engine_version     = var.DBEngineVersion
   backup_retention_period = var.DBBackupRetentionPeriod
