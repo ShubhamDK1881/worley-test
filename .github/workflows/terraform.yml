@@ -20,14 +20,14 @@ jobs:
 
     - name: Terraform Init
       run: terraform init \
-           -backend-config="bucket=terraform-be-worley" \
+           -backend-config="bucket=terraform-be-worley-test" \
            -backend-config="key=main" \
-           -backend-config="region=us-east-1"
+           -backend-config="ap-south-1"
       working-directory: ./environments/dev
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-1
+        AWS_REGION: ap-south-1
 
     - name: Terraform Plan
       run: terraform plan -out=tfplan
@@ -35,7 +35,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-1
+        AWS_REGION: ap-south-1
 
     - name: Save Terraform Plan
       run: echo "tfplan=$(base64 tfplan)" >> $GITHUB_ENV
