@@ -19,10 +19,7 @@ jobs:
         terraform_version: 'latest'
 
     - name: Terraform Init
-      run: terraform init \
-           -backend-config="bucket=terraform-be-worley-test" \
-           -backend-config="key=main" \
-           -backend-config="ap-south-1"
+      run: terraform init 
       working-directory: ./environments/dev
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
