@@ -52,10 +52,6 @@ variable private_rds_subnet2_cidr {
   type = string
 }
 
-variable bucket_name_vpc {
-  type = string
-}
-
 variable repo_name_ui {
   type = string
 }
