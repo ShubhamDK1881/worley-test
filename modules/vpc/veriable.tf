@@ -45,11 +45,6 @@ variable private_rds_subnet2_cidr {
 }
 
 
-variable "log_destination" {
-  description = "S3 bucket for storing VPC flow logs"
-  type        = string
-}
-
 variable "region" {
   type = string
 }
