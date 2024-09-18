@@ -28,7 +28,7 @@ jobs:
 
     - name: Terraform Plan
       run: terraform plan -out=tfplan
-      working-directory: environments/dev
+      working-directory: ./
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -36,18 +36,17 @@ jobs:
 
     - name: Save Terraform Plan
       run: echo "tfplan=$(base64 tfplan)" >> $GITHUB_ENV
-      working-directory: environments/dev
-
+      working-directory: ./
     - name: Upload Terraform Plan Artifact
       uses: actions/upload-artifact@v3
       with:
         name: tfplan
-        path: environments/dev/tfplan
+        path: ./
 
     - name: Terraform Apply
       if: github.event_name == 'push'
       run: terraform apply -auto-approve tfplan
-      working-directory: environments/dev
+      working-directory: ./
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
