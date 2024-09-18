@@ -5,10 +5,8 @@ provider "aws" {
 terraform {
 
   backend "s3" {
-    bucket = "example-tf-${var.environment}-states"
-    key = "example-${var.environment}-state/terraform.tfstate"
-    region = var.aws_region
-    dynamodb_table = "example-tf-${var.environment}-locks"
-    encrypt = true
+    bucket = "terraform-be-worley-test-states"
+    key = "terraform-be-worley-test-state/terraform.tfstate"
+    region = ap-south-1
   }
 }
