@@ -1,0 +1,57 @@
+name: Terraform AWS Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  TerraformAWS:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 'latest'
+
+    - name: Terraform Init
+      run: terraform init \
+           -backend-config="bucket=terraform-be-worley" \
+           -backend-config="key=main" \
+           -backend-config="region=us-east-1"
+      working-directory: ./environments/dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: us-east-1
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+      working-directory: ./environments/dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: us-east-1
+
+    - name: Save Terraform Plan
+      run: echo "tfplan=$(base64 tfplan)" >> $GITHUB_ENV
+      working-directory: ./environments/dev
+
+    - name: Upload Terraform Plan Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: tfplan
+        path: ./environments/dev/tfplan
+
+    - name: Terraform Apply
+      if: github.event_name == 'push'
+      run: terraform apply -auto-approve tfplan
+      working-directory: ./environments/dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ap-south-1
