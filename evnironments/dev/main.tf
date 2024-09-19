@@ -5,17 +5,10 @@ provider "aws" {
 terraform {
 
   backend "s3" {
-    bucket = "terraform-be-worley-test-states"
+    bucket = "terraform-be-worley-test-state"
     key = "terraform-be-worley-test-state/terraform.tfstate"
     region = ap-south-1
   }
-}
-
-module "s3" {
-  source      = "../../modules/s3"
-  bucket_name = var.bucket_name
-  environment = var.environment
-  bucket_name_vpc = var.bucket_name_vpc
 }
 
 module "vpc" {
