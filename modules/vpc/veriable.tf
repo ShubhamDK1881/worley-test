@@ -2,10 +2,6 @@ variable vpc_cidr {
   type = string
 }
 
-variable vpc_name {
-  type = string
-}
-
 variable public_subnet1_cidr {
   type = string
 }
