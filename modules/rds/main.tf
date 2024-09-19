@@ -84,12 +84,11 @@ resource "aws_rds_cluster_parameter_group" "rds_param_group" {
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
-  subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
-  description = "Aurora DB Subnet Group"
+  subnet_ids = [aws_subnet.private_subnet1.id, aws_subnet.private_subnet2.id]
 }
 resource "aws_security_group" "db_security_group" {
   name        = "db_security_group"
-  vpc_id      = data.aws_vpc.vpc_id
+  vpc_id      = aws_vpc.vpc_id
 
   ingress {
     from_port   = 5432
@@ -120,7 +119,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_secretsmanager_secret" "secretmasterDB" {
-   name = var.db_secret
+   name = "secretmasterDB"
 }
   
 resource "aws_secretsmanager_secret_version" "sversion" {
