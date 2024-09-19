@@ -97,7 +97,8 @@ resource "aws_security_group" "db_security_group" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
+resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
+  type              =i ngress
   security_group_id = aws_security_group.db_security_group.id
   cidr_ipv4         = aws_vpc.main.cidr_block
   from_port         = 5432
@@ -105,7 +106,8 @@ resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
   to_port           = 5432
 }
 
-resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
+resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
+  type              = ingress
   security_group_id = aws_security_group.db_security_group.id
   cidr_ipv4         = aws_vpc.main.cidr_block
   from_port         = 0
@@ -114,7 +116,8 @@ resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_vpc_security_group_egress_rule" "db_security_group_ipv4" {
+resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
+  type              = egress
   security_group_id = aws_security_group.db_security_group.id
   cidr_ipv4         = aws_vpc.main.cidr_block
   from_port         = 0
@@ -123,18 +126,9 @@ resource "aws_vpc_security_group_egress_rule" "db_security_group_ipv4" {
   cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "db_security_group"
-  }
-}
-
 resource "aws_secretsmanager_secret" "rds_db_secret" {
   name        = "RDSDBSecret"
   description = "RDS credentials for MyRDSInstance"
-
-  tags = {
-    Name = "RDSDBSecret"
-  }
 }
  
 resource "aws_secretsmanager_secret_version" "rds_db_secret_version" {
