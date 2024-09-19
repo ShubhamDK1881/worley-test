@@ -13,19 +13,18 @@ module "vpc" {
   availability_zone2 = var.availability_zone2
 }
 
-/*module "rds" {
+module "rds" {
   source = "./modules/rds"
-  engine_name              = var.DBEngineName
-  major_engine_version     = var.DBEngineVersion
-  backup_retention_period = var.DBBackupRetentionPeriod
-  preferred_backup_window = var.Backupwindow
-  preferred_maintenance_window = var.Maintenancewindow
-  database_name           = var.DBName
-  identifier              = var.DBInstnaceName
-  instance_class          = var.InstanceType
-  monitoring_interval     = var.MonitoringInterval
-  performance_insights_retention_period = var.PerformanceInsightsRetentionPeriod
-  cluster_identifier      = var.DBClusterName
+  DBClusterName = var.DBClusterName
+  DBEngineVersion     = var.DBEngineVersion
+  DBBackupRetentionPeriod = var.DBBackupRetentionPeriod
+  Backupwindow = var.Backupwindow
+  Maintenancewindow = var.Maintenancewindow
+  DBName = var.DBName
+  DBInstnaceName = var.DBInstnaceName
+  InstanceType          = var.InstanceType
+  MonitoringInterval     = var.MonitoringInterval
+  PerformanceInsightsRetentionPeriod = var.PerformanceInsightsRetentionPeriod
+  DBEngineName = var.DBEngineName
   vpc_name = var.vpc_name
 }
-*/
