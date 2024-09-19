@@ -33,7 +33,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
 
 }
 
-resource "_cluster_instance" "aurora_instance" {
+resource "aws_rds__cluster_instance" "aurora_instance" {
   identifier              = var.DBInstnaceName
   cluster_identifier      = aws_rds_cluster.aurora_cluster.id
   instance_class          = var.InstanceType
