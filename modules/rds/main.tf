@@ -88,7 +88,7 @@ resource "aws_db_subnet_group" "subnet_group" {
 }
 resource "aws_security_group" "db_security_group" {
   name        = "db_security_group"
-  vpc_id      = aws_vpc.vpc_id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 5432
