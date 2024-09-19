@@ -84,14 +84,15 @@ resource "aws_rds_cluster_parameter_group" "rds_param_group" {
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
-  subnet_ids = [data.aws_subnet_ids.private_subnets.ids]
+  subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
   description = "Aurora DB Subnet Group"
 }
 
 resource "aws_security_group" "db_security_group" {
   name        = "db_security_group"
   description = "Allow inbound traffic to Aurora"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = aws_vpc.vpc.id
+}
 
   ingress {
     from_port   = 5432
