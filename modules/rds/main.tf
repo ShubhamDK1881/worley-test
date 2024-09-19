@@ -92,27 +92,35 @@ resource "aws_security_group" "db_security_group" {
   name        = "db_security_group"
   description = "Allow inbound traffic to Aurora"
   vpc_id      = aws_vpc.vpc.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
+  security_group_id = aws_security_group.db_security_group.id
+  cidr_ipv4         = aws_vpc.main.cidr_block
+  from_port         = 5432
+  ip_protocol       = "tcp"
+  to_port           = 5432
+}
 
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_vpc_security_group_ingress_rule" "db_security_group_ipv4" {
+  security_group_id = aws_security_group.db_security_group.id
+  cidr_ipv4         = aws_vpc.main.cidr_block
+  from_port         = 0
+  ip_protocol       = "-1"
+  to_port           = 0
+  cidr_blocks = ["0.0.0.0/0"]
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+resource "aws_vpc_security_group_egress_rule" "db_security_group_ipv4" {
+  security_group_id = aws_security_group.db_security_group.id
+  cidr_ipv4         = aws_vpc.main.cidr_block
+  from_port         = 0
+  ip_protocol       = "tcp"
+  to_port           = 0
+  cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
