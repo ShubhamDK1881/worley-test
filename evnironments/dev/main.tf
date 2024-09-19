@@ -28,7 +28,7 @@ module "vpc" {
   availability_zone2 = var.availability_zone2
 }
 
-module "rds" {
+/*odule "rds" {
   source = "../../modules/rds"
   engine_name              = var.DBEngineName
   major_engine_version     = var.DBEngineVersion
@@ -42,3 +42,4 @@ module "rds" {
   performance_insights_retention_period = var.PerformanceInsightsRetentionPeriod
   cluster_identifier      = var.DBClusterName
   vpc_name = var.vpc_name
+*/
