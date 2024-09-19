@@ -8,7 +8,7 @@ locals {
   }
 }
 
-resource "aws_rds_option_group" "rds-option-group" {
+resource "aws_db_option_group" "db-option-group" {
   name                     = "aurora-postgresql-15-option-group"
   engine_name              = var.DBEngineName
   major_engine_version     = var.DBEngineVersion
@@ -25,7 +25,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   backup_retention_period = var.DBBackupRetentionPeriod
   preferred_backup_window = var.Backupwindow
   preferred_maintenance_window = var.Maintenancewindow
-  rds_subnet_group_name    = aws_rds_subnet_group.subnet_group.name
+  db_subnet_group_name    = aws_db_subnet_group.subnet_group.name
   vpc_security_group_ids  = [aws_security_group.db_security_group.id]
   storage_encrypted       = true
   database_name           = var.DBName
@@ -82,14 +82,14 @@ resource "aws_rds_cluster_parameter_group" "rds_param_group" {
   }
 }
 
-resource "aws_rds_subnet_group" "subnet_group" {
+resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
   subnet_ids = [data.aws_subnet_ids.private_subnets.ids]
   description = "Aurora DB Subnet Group"
 }
 
-resource "aws_security_group" "rds_security_group" {
-  name        = "rds_security_group"
+resource "aws_security_group" "db_security_group" {
+  name        = "db_security_group"
   description = "Allow inbound traffic to Aurora"
   vpc_id      = module.vpc.vpc_id
 
@@ -115,11 +115,11 @@ resource "aws_security_group" "rds_security_group" {
   }
 
   tags = {
-    Name = "rds_security_group"
+    Name = "db_security_group"
   }
 }
 
-resource "aws_secretsmanager_secret" "rds_rds_secret" {
+resource "aws_secretsmanager_secret" "rds_db_secret" {
   name        = "RDSDBSecret"
   description = "RDS credentials for MyRDSInstance"
 
@@ -127,25 +127,15 @@ resource "aws_secretsmanager_secret" "rds_rds_secret" {
     Name = "RDSDBSecret"
   }
 }
-
-resource "aws_secretsmanager_secret" "rds_secret" {
-  name        = "RDSDBSecret"
-  description = "RDS credentials for MyRDSInstance"
-}
  
-resource "aws_secretsmanager_secret_version" "rds_secret_version" {
-  secret_id = aws_secretsmanager_secret.rds_secret.id
-  secret_string = jsonencode({
-    username = "rdsadminuser"
-  })
-  generate_secret_string {
-    secret_string_template = jsonencode({
-      username = "rdsadminuser"
-    })
-    generate_string_key = "password"
-    password_length     = 16
-    exclude_characters  = "\"@/\\"
-  }
+resource "aws_secretsmanager_secret_version" "rds_db_secret_version" {
+  secret_id = aws_secretsmanager_secret.db_secret.id
+  secret_string = <<EOF
+   {
+    "username": "worley",
+    "password": "${random_password.password.result}"
+   }
+    EOF
 }
 
 data "aws_secretsmanager_secret_version" "db_secret" {
