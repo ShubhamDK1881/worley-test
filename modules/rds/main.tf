@@ -86,31 +86,6 @@ resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
   subnet_ids = [aws_subnet.private_subnet1.id, aws_subnet.private_subnet2.id]
 }
-resource "aws_security_group" "db_security_group" {
-  name        = "db_security_group"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 resource "random_password" "password" {
   length           = 16
