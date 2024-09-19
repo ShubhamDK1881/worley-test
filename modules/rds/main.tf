@@ -33,7 +33,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
 
 }
 
-resource "aws_rds_cluster_instance" "aurora_instance" {
+resource "_cluster_instance" "aurora_instance" {
   identifier              = var.DBInstnaceName
   cluster_identifier      = aws_rds_cluster.aurora_cluster.id
   instance_class          = var.InstanceType
@@ -43,7 +43,7 @@ resource "aws_rds_cluster_instance" "aurora_instance" {
   monitoring_interval     = var.MonitoringInterval
   performance_insights_enabled = true
   performance_insights_retention_period = var.PerformanceInsightsRetentionPeriod
-  db_parameter_group_name = aws_db_parameter_group.db_param_group.name
+  rds_parameter_group_name = aws_rds_parameter_group.rds_param_group.name
   auto_minor_version_upgrade = true
 }
 
@@ -62,7 +62,7 @@ resource "aws_rds_cluster_parameter_group" "cluster_param_group" {
   }
 }
 
-resource "aws_rds_parameter_group" "db_param_group" {
+resource "aws_rds_cluster_parameter_group" "db_param_group" {
   name   = "${var.DBClusterName}-param-group"
   family = lookup(local.db_family_map, var.DBEngineVersion)
 
