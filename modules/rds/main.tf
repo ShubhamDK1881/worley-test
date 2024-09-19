@@ -84,7 +84,7 @@ resource "aws_rds_cluster_parameter_group" "rds_param_group" {
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
-  subnet_ids = [aws_subnet.private_subnet1.id, aws_subnet.private_subnet2.id]
+  subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id]
 }
 
 resource "random_password" "password" {
