@@ -87,60 +87,58 @@ resource "aws_db_subnet_group" "subnet_group" {
   subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
   description = "Aurora DB Subnet Group"
 }
-
 resource "aws_security_group" "db_security_group" {
   name        = "db_security_group"
-  description = "Allow inbound traffic to Aurora"
-  vpc_id      = aws_vpc.vpc.id
-  lifecycle {
-    create_before_destroy = true
+  vpc_id      = data.aws_vpc.vpc_id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
-  type              =i ngress
-  security_group_id = aws_security_group.db_security_group.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
-  from_port         = 5432
-  ip_protocol       = "tcp"
-  to_port           = 5432
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
 }
 
-resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
-  type              = ingress
-  security_group_id = aws_security_group.db_security_group.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
-  from_port         = 0
-  ip_protocol       = "-1"
-  to_port           = 0
-  cidr_blocks = ["0.0.0.0/0"]
+resource "aws_secretsmanager_secret" "secretmasterDB" {
+   name = var.db_secret
 }
-
-resource "aws_vpc_security_group_rule" "db_security_group_ipv4" {
-  type              = egress
-  security_group_id = aws_security_group.db_security_group.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
-  from_port         = 0
-  ip_protocol       = "tcp"
-  to_port           = 0
-  cidr_blocks = ["0.0.0.0/0"]
-  }
-
-resource "aws_secretsmanager_secret" "rds_db_secret" {
-  name        = "RDSDBSecret"
-  description = "RDS credentials for MyRDSInstance"
-}
- 
-resource "aws_secretsmanager_secret_version" "rds_db_secret_version" {
-  secret_id = aws_secretsmanager_secret.db_secret.id
+  
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.secretmasterDB.id
   secret_string = <<EOF
    {
     "username": "worley",
     "password": "${random_password.password.result}"
    }
-    EOF
+EOF
 }
 
-data "aws_secretsmanager_secret_version" "db_secret" {
-  secret_id = aws_secretsmanager_secret.db_secret.id
+data "aws_secretsmanager_secret_version" "db_secret_version" {
+  secret_id = aws_secretsmanager_secret.secretmasterDB.id
 }
+
+
+data "aws_secretsmanager_secret_version" "creds" {
+  secret_id = data.aws_secretsmanager_secret.secretmasterDB.arn
+}
+
