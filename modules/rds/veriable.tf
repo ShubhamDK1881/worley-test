@@ -1,47 +1,53 @@
-variable "vpc_name" {
+variable instance_type {
   type = string
 }
 
-variable "InstanceType" {
+variable db_instance_name {
   type = string
 }
 
-variable "DBEngineVersion" {
+variable db_engine_version {
   type = string
 }
 
-variable "DBClusterName" {
+variable db_cluster_name {
   type = string
 }
 
-variable "DBName" {
+variable db_name {
   type = string
 }
 
-variable "DBBackupRetentionPeriod" {
-  type = number
-}
-
-variable "Backupwindow" {
-  type    = string
-}
-
-variable "Maintenancewindow" {
-  type    = string
-}
-
-variable "DBEngineName" {
+variable db_backup_retention_period {
   type = string
 }
 
-variable "DBInstnaceName" {
+variable backup_window {
+  type = string
+  default = "00:00-01:00"
+}
+
+variable maintenance_window{
+  type = string
+  default = "Mon:02:00-Mon:03:00"
+}
+
+variable db_engine_name {
   type = string
 }
 
-variable "MonitoringInterval" {
-  type = number
+variable db_instnace_name {
+  type = string
 }
 
-variable "PerformanceInsightsRetentionPeriod" {
-  type = number
+variable monitoring_interval {
+  type = string
+}
+
+variable performance_insights_retention_period {
+  type = string
+}
+
+variable db_secret{
+    type = string
 }
