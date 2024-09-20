@@ -106,30 +106,6 @@ resource "aws_route_table_association" "private_subnet2_route_table_association"
   route_table_id = aws_route_table.private_route_table.id
 }
 
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["vpc-flow-logs.amazonaws.com"]  # Allows the VPC Flow Logs service to assume this role
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-
-
-resource "aws_flow_log" "worley-vpc-flow-log" {
-  log_destination      = var.log_destination  # Use the passed S3 bucket name
-  log_destination_type = "s3"
-  traffic_type         = "ALL"
-  vpc_id               = aws_vpc.vpc.id
-}
-
-
 resource "aws_vpc_endpoint" "s3-vpc-endpoint" {
   vpc_id       = aws_vpc.vpc.id
   service_name = "com.amazonaws.${var.region}.s3"  # Use data.aws_region.current.name here
