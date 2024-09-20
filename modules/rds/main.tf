@@ -84,7 +84,7 @@ resource "aws_rds_cluster_parameter_group" "rds_param_group" {
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "aurora-subnet-group"
-  subnet_ids = [module.vpc.private_subnet1_id, module.vpc.private_subnet2_id]
+  subnet_ids = [module.vpc.private_subnet1.id, module.vpc.private_subnet2.id]
 
 }
 
