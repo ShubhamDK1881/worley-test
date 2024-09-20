@@ -57,7 +57,7 @@ resource "aws_subnet" "rds_private_subnet2" {
   tags = {
     Name = "${var.vpc_name}-RDS-PrivateSubnet2"
   }
-
+}
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.vpc.id
   tags = {
