@@ -8,7 +8,7 @@ output "vpc_arn" {
   value = module.vpc.vpc_arn
 }
 
-/*output "DBClusterEndpoint" {
+output "DBClusterEndpoint" {
   description = "The endpoint of the Aurora DB cluster"
   value       = module.rds.DBClusterEndpoint
 }
@@ -16,4 +16,4 @@ output "vpc_arn" {
 output "DBClusterReadEndpoint" {
   description = "The read-only endpoint of the Aurora DB cluster"
   value       = module.rds.DBClusterReadEndpoint
-}*/
+}
