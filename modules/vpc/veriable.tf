@@ -2,8 +2,12 @@ variable vpc_cidr {
   type = string
 }
 
-variable "vpc_name" {
+variable vpc_name {
   type = string
+}
+
+variable internet_gateway_name {
+ type = string 
 }
 
 variable public_subnet1_cidr {
@@ -41,6 +45,15 @@ variable private_rds_subnet2_cidr {
 }
 
 
+variable "log_destination" {
+  description = "S3 bucket for storing VPC flow logs"
+  type        = string
+}
+
 variable "region" {
+  type = string
+}
+
+variable "name" {
   type = string
 }
