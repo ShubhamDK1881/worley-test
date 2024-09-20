@@ -1,3 +1,8 @@
+variable "bucket_name" {
+  description = "The name of the S3 bucket"
+  type        = string
+}
+
 variable "environment" {
   description = "The environment name (e.g., dev, prod)"
   type        = string
@@ -13,6 +18,10 @@ variable "region" {
 }
 
 variable "vpc_name" {
+  type = string
+}
+
+variable internet_gateway_name {
   type = string
 }
 
@@ -48,6 +57,10 @@ variable private_rds_subnet2_cidr {
   type = string
 }
 
+variable bucket_name_vpc {
+  type = string
+}
+
 variable repo_name_ui {
   type = string
 }
@@ -56,46 +69,60 @@ variable ecs_cluster_name {
   type = string
 }
 
-variable "InstanceType" {
+/*variable instance_type {
   type = string
 }
 
-variable "DBEngineVersion" {
+variable db_instance_name {
   type = string
 }
 
-variable "DBClusterName" {
+variable db_engine_version {
   type = string
 }
 
-variable "DBName" {
+variable db_cluster_name {
   type = string
 }
 
-variable "DBBackupRetentionPeriod" {
-  type = number
-}
-
-variable "Backupwindow" {
-  type    = string
-}
-
-variable "Maintenancewindow" {
-  type    = string
-}
-
-variable "DBEngineName" {
+variable db_name {
   type = string
 }
 
-variable "DBInstnaceName" {
+variable db_backup_retention_period {
   type = string
 }
 
-variable "MonitoringInterval" {
-  type = number
+variable backup_window {
+  type = string
+  default = "00:00-01:00"
 }
 
-variable "PerformanceInsightsRetentionPeriod" {
-  type = number
+variable maintenance_window{
+  type = string
+  default = "Mon:02:00-Mon:03:00"
+}
+
+variable db_engine_name {
+  type = string
+}
+
+variable db_instnace_name {
+  type = string
+}
+
+variable monitoring_interval {
+  type = string
+}
+
+variable performance_insights_retention_period {
+  type = string
+}
+
+variable db_secret{
+    type = string
+}*/
+
+variable name {
+  type = string
 }
